@@ -1,0 +1,30 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div>
+	<div class="module-form-container">
+		<div class="card shadow-lg">
+			<h5 class="card-header">Add New Contact</h5>
+			<div class="card-body">
+				<form class="row g-3 mt-2 mb-4" th:object="${contact}" th:action="@{/contacts/saveContact}" method="POST">
+					<input type="hidden" id="contactId" th:field="*{contactId}">
+					<div class="col-12">
+						<label for="contactName" class="form-label">Contact Name</label>
+						<input type="text" class="form-control" id="contactName" th:field="*{contactName}">
+					</div>
+					<div class="col-12 ">
+						<label for="contactEmail" class="form-label">Email Address</label>
+						<input type="email" class="form-control" id="contactEmail" th:field="*{contactEmail}">
+					</div>
+					<div class="col-12 ">
+						<label for="contactPhone" class="form-label">Phone Number</label>
+						<input type="number" class="form-control" id="contactPhone" th:field="*{contactPhone}">
+					</div>
+					<div class="modal-footer">
+						<a type="button" href="#" th:href="@{/contacts}" class="btn btn-md btn-outline-secondary">Cancel</a>
+						<button type="submit" class="btn btn-md btn-primary mx-4">Save</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+</html>

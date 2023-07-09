@@ -1,0 +1,137 @@
+@import url('https://fonts.googleapis.com/css2?family=Questrial&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+}
+
+
+.workspace{
+    position: relative;
+}
+
+.sallu-nav{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: fit-content;
+    background-color: rgba(214, 232, 244, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.sallu-nav div{
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    font-size: small;
+}
+
+#brand{
+    font-weight: bold;
+    font-family: 'Questrial', sans-serif;
+    color: #42a6fb;
+    font-size: 25px;
+}
+
+.sallu-nav div *{
+    margin: 0px 3px;
+}
+
+.sallu-container{
+    display: flex;
+}
+
+.sallu-aside{
+    position: fixed;
+    margin-top: var(--nav-height);
+    height: calc(100vh - var(--nav-height));
+    background-color: rgba(214, 232, 244, 0.8);
+}
+
+.aside-list{
+    list-style-type: none;
+    width: 100%;
+    padding: 20px 10px;
+    font-size: 0.9rem;
+    color: rgb(118, 117, 117);
+}
+
+.aside-list img{
+    width: 35px;
+}
+
+.aside-list li a{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+}
+.aside-list li:hover{
+    cursor: pointer;
+    color: black;
+}
+
+.aside-text{
+    padding: 0px 3vw;
+}
+
+.module-details-actions{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.module-details-actions *{
+    margin: 10px 2vw;
+}
+
+.module-details-actions a{
+    height: fit-content;
+}
+
+#module-display{
+    font-size: 1.5rem;
+}
+
+
+.main-body{
+    margin-top: var(--nav-height);
+    margin-left: var(--aside-width);
+    width: calc(100vw - var(--aside-width));
+    height: calc(100vh - var(--nav-height));
+    overflow-y: scroll;
+    background-color: white;
+}
+
+.module-form-container{
+    display: flex;    
+    align-items: center;
+    padding: 0px 10vw;
+    height: calc(100vh - var(--nav-height));
+}
+
+.module-container{
+    padding:20px;
+}
+
+td img{
+    width: 20px;
+    margin-left: 10px;
+}
+td img:hover{
+    cursor: pointer;
+}
+
+@media screen and (max-width: 1000px) {
+    .aside-text {
+        display: none;
+    }
+    #brand{
+        font-size: 18px;
+    }
+}

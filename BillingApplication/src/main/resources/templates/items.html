@@ -1,0 +1,57 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div class="module-container">
+	<div class="module-details-actions">
+		<p id="module-display">Items</p>
+		<a href="#" class="btn btn-sm btn-primary" th:href="@{/items/showItemsForm}">Add Item</a>
+	</div>
+	<div class="items-table">
+		<table class="table table-hover">
+			<thead>
+			<tr>
+				<th>#</th>
+				<th>Item name</th>
+				<th>Stock in hand</th>
+				<th>Cost Price</th>
+				<th>Selling Price</th>
+				<th>Actions</th>
+			</tr>
+			</thead>
+			<tbody>
+			<tr th:each="item, status : ${itemsList}">
+				<td th:text="${status.count}"></td>
+				<td th:text="${item.itemName}"></td>
+				<td th:text="${item.itemQuantity}"></td>
+				<td th:text="${item.itemCostPrice}"></td>
+				<td th:text="${item.itemSellingPrice}"></td>
+				<td>
+					<a th:href="@{/items/editItem(itemId=${item.itemId})}" href="#"><img src="/images/edit.png" alt="edit" width="20px"></a>
+					<a th:onclick="'setItemForDelete(\'' + ${item.itemId} + '\')'" data-bs-toggle="modal" data-bs-target="#deleteItemModal" href="#"><img src="/images/delete.png" alt="delete" width="20px"></a>
+				</td>
+			</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<div class="modal fade" id="deleteItemModal" tabindex="-1" aria-labelledby="deleteItemModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+		  <div class="modal-content">
+			  <div class="modal-header">
+				  <h1 class="modal-title fs-5" id="exampleModalLabel">Are you sure</h1>
+				  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			  </div>
+			<div class="modal-body">
+			  Delete item permanently
+			</div>
+			<div class="modal-footer">
+			  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+			<form th:action="@{/items/deleteItem}" method="POST" style="display: inline;">
+				<input type="hidden" name="itemId" id="itemIdToDelete" value=""/>
+				<button type="submit" class="btn btn-primary">Delete</button>
+			</form>
+			</div>
+		  </div>
+		</div>
+	</div>
+
+</div>
+</html>

@@ -1,0 +1,42 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <div>
+        <div class="module-form-container">
+            <div class="card shadow-lg">
+                <h5 class="card-header">Add New Item</h5>
+                <div class="card-body">
+                    <form class="row g-3 mt-2 mb-4" th:object="${item}" th:action="@{/items/saveItem}" method="POST">
+                        <input type="hidden" id="itemId" th:field="*{itemId}">
+                        <div class="col-12">
+                            <label for="itemName" class="form-label">Item Name</label>
+                            <input type="text" class="form-control" id="itemName" th:field="*{itemName}">
+                        </div>
+                        <div class="col-12 ">
+                            <label for="itemCostPrice" class="form-label">Cost Price</label>
+                            <input type="number" class="form-control" id="itemCostPrice" th:field="*{itemCostPrice}">
+                        </div>
+                        <div class="col-12 ">
+                            <label for="itemSellingPrice" class="form-label">Selling Price</label>
+                            <input type="number" class="form-control" id="itemSellingPrice" th:field="*{itemSellingPrice}">
+                        </div>
+                        <div class="col-12">
+                            <label for="itemQuantity" class="form-label">Opening Stock</label>
+                            <input type="number" class="form-control" id="itemQuantity" th:field="*{itemQuantity}">
+                        </div>
+                        <div class="col-12">
+                            <label for="itemTax" class="form-label">Tax Associated</label>
+                            <select class="form-select" id="itemTax">
+                                <option value="1">GST 18</option>
+                                <option value="2">GST 12</option>
+                                <option value="3">GST 27</option>
+                            </select>
+                        </div>
+                        <div class="modal-footer">
+                            <a type="button" href="#" th:href="@{/items}" class="btn btn-md btn-outline-secondary">Cancel</a>
+                            <button type="submit" class="btn btn-md btn-primary mx-4">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</html>
