@@ -1,0 +1,31 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div>
+	<div class="module-form-container">
+		<div class="card w-50 shadow-lg">
+			<h5 class="card-header">Add New Tax</h5>
+			<div class="card-body">
+				<form  th:object="${tax}" th:action="@{/taxes/saveTax}" method="POST">
+					<input type="hidden" id="taxId" th:field="*{taxId}">
+					<div class="row mb-3">
+						<label for="taxName" class="col-3 form-label">Tax Name</label>
+						<div class="col">
+							<input type="text" class="form-control" id="taxName" th:field="*{taxName}">
+						</div>
+					</div>
+					<div class="row mb-3">
+						<label for="taxPercentage" class="col-3 form-label">Tax Percentage</label>
+						<div class="col">
+							<input type="number" class="form-control" id="taxPercentage" th:field="*{taxPercentage}">
+						</div>
+					</div>
+					
+					<div class="modal-footer">
+						<a type="button" href="#" th:href="@{/taxes}" class="btn btn-md btn-outline-secondary">Cancel</a>
+						<button type="submit" class="btn btn-md btn-primary mx-4">Save</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+</html>

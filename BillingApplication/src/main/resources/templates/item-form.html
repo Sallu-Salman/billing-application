@@ -1,34 +1,43 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
     <div>
         <div class="module-form-container">
-            <div class="card shadow-lg">
+            <div class="card w-75 shadow-lg">
                 <h5 class="card-header">Add New Item</h5>
                 <div class="card-body">
-                    <form class="row g-3 mt-2 mb-4" th:object="${item}" th:action="@{/items/saveItem}" method="POST">
+                    <form  th:object="${item}" th:action="@{/items/saveItem}" method="POST">
                         <input type="hidden" id="itemId" th:field="*{itemId}">
-                        <div class="col-12">
-                            <label for="itemName" class="form-label">Item Name</label>
-                            <input type="text" class="form-control" id="itemName" th:field="*{itemName}">
+                        <div class="row mb-3">
+                            <label for="itemName" class="col-3 col-form-label">Item Name</label>
+                            <div class="col-9">
+                                <input type="text" class="form-control" id="itemName" th:field="*{itemName}" required>
+                            </div>
                         </div>
-                        <div class="col-12 ">
-                            <label for="itemCostPrice" class="form-label">Cost Price</label>
-                            <input type="number" class="form-control" id="itemCostPrice" th:field="*{itemCostPrice}">
+                        <div class="row mb-3">
+                            <label for="itemCostPrice" class="col-3 form-label">Cost Price</label>
+                            <div class="col-9 ">
+                                <input type="number" class="form-control" id="itemCostPrice" th:field="*{itemCostPrice}" >
+                            </div>
                         </div>
-                        <div class="col-12 ">
-                            <label for="itemSellingPrice" class="form-label">Selling Price</label>
-                            <input type="number" class="form-control" id="itemSellingPrice" th:field="*{itemSellingPrice}">
+                        <div class="row mb-3">
+                            <label for="itemSellingPrice" class="col-3 form-label">Selling Price</label>
+                            <div class="col-9">
+                                <input type="number" class="form-control" id="itemSellingPrice" th:field="*{itemSellingPrice}">
+                            </div>
                         </div>
-                        <div class="col-12">
-                            <label for="itemQuantity" class="form-label">Opening Stock</label>
-                            <input type="number" class="form-control" id="itemQuantity" th:field="*{itemQuantity}">
+                        <div class="row mb-3">
+                            <label for="itemQuantity" class="col-3 form-label">Opening Stock</label>
+                            <div class="col-9">
+                                <input type="number" class="form-control" id="itemQuantity" th:field="*{itemQuantity}">
+                            </div>
                         </div>
-                        <div class="col-12">
-                            <label for="itemTax" class="form-label">Tax Associated</label>
-                            <select class="form-select" id="itemTax">
-                                <option value="1">GST 18</option>
-                                <option value="2">GST 12</option>
-                                <option value="3">GST 27</option>
-                            </select>
+                        <div class="row mb-3">
+                            <label for="itemTax" class="col-3 form-label">Tax Associated</label>
+                            <div class="col-9">
+                                <select class="form-select" id="itemTax" name="itemTax" required>
+                                    <option selected th:value="*{itemTax.taxId}" th:text="*{itemTax.taxName}"></option>
+                                    <option th:each="tax : ${taxList}" th:value="${tax.taxId}" th:text="${tax.taxName}"></option>
+                                </select>
+                            </div>
                         </div>
                         <div class="modal-footer">
                             <a type="button" href="#" th:href="@{/items}" class="btn btn-md btn-outline-secondary">Cancel</a>

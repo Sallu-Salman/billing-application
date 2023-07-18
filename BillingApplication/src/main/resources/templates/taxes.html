@@ -1,0 +1,28 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div class="module-container">
+	<div class="module-details-actions">
+		<p id="module-display">Tax</p>
+		<a href="#" class="btn btn-sm btn-primary" th:href="@{/taxes/showTaxesForm}">Add Tax</a>
+	</div>
+	<div class="taxes-table">
+		<table class="table table-sm table-hover table-bordered">
+			<thead class="table-light">
+			<tr>
+				<th>#</th>
+				<th>Tax</th>
+				<th>Tax Percentage</th>
+			</tr>
+			</thead>
+			<tbody>
+			<tr th:each="tax, status : ${taxesList}">
+				<td th:text="${status.count}"></td>
+				<td th:text="${tax.taxName}"></td>
+				<td th:text="${tax.taxPercentage}"></td>
+			</tr>
+			</tbody>
+		</table>
+	</div>
+
+
+</div>
+</html>

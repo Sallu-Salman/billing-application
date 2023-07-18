@@ -1,0 +1,137 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div>
+	<div class="module-form-container invoice-form-container">
+		<div class="card w-100 shadow-lg invoice-card">
+			<h5 class="card-header">New Invoice</h5>
+			<div class="card-body">
+				<form th:object="${invoice}" th:action="@{/invoices/saveInvoice}" method="POST" id="invoiceForm">
+					<input type="hidden" id="invoiceId" th:field="*{invoiceId}">
+
+					<div class="row mb-3">
+						<label for="contactId" class="col-12 form-label col-md-2">Customer Name</label>
+						<div class="col-12 col-md-6">
+							<select class="form-select" id="contactId" name="contactId" required>
+								<option selected th:value="*{contact.contactId}" th:text="*{contact.contactName}"></option>
+								<option th:each="contact : ${contactList}" th:value="${contact.contactId}" th:text="${contact.contactName}"></option>
+							</select>
+						</div>
+					</div>
+					<div class="row mb-5">
+						<label for="invoiceDate" class="col-12 form-label col-md-2">Invoice Date</label>
+						<div class="col-12 col-md-3">
+							<input type="date" class="form-control" id="invoiceDate"  th:field="*{invoiceDate}">
+						</div>
+					</div>
+					<div class="row mb-5">
+						<label for="subject" class="col-12 form-label col-md-2">Subject</label>
+						<div class="col-12 col-md-6">
+							<input type="text" class="form-control" id="subject" th:field="*{subject}" placeholder="Monthly general groceries">
+						</div>
+					</div>
+					<hr>
+					<div class="row mb-3 px-5">
+						<div class="col">
+							<div class="row">
+								<p>Line Items</p>
+							</div>
+							<div class="row">
+								<table id="lineItemTable" class="table table-sm table-bordered ">
+									<thead class="table-light">
+									<tr>
+										<th class="px-3">#</th>
+										<th class="px-3">Item</th>
+										<th class="px-3">Quantity</th>
+										<th class="px-3">Rate</th>
+										<th class="px-3">Tax(%)</th>
+										<th class="px-3">Amount</th>
+										<th class="px-3"> </th>
+									</tr>
+									</thead>
+									<tbody>
+									<tr th:each="lineItem, status : *{lineItems}">
+										<input type="hidden" th:field="*{lineItems[__${status.index}__].lineItemId}">
+										<td class="align-middle snum px-3 bg-light" th:text="${status.count}"></td>
+										<td class="px-1 align-middle">
+											<select class="form-select form-select-sm border-0" name="lineItems[__index__].itemName" th:field="*{lineItems[__${status.index}__].itemName}" onchange="updateLineItem(this)" required>
+												<option selected th:value="*{lineItems[__${status.index}__].itemName}" th:text="*{lineItems[__${status.index}__].itemName}"></option>
+												<option th:each="item : ${itemList}" th:value="${item.itemName}" th:text="${item.itemName}"></option>
+											</select>
+										</td>
+										<td class="px-3"><input type="number" class="form-control-plaintext" th:field="*{lineItems[__${status.index}__].itemQuantity}" name="lineItems[__index__].itemQuantity" onchange="updateLineAmount(this)" ></td>
+										<td class="px-3"><input type="number" class="form-control-plaintext" th:field="*{lineItems[__${status.index}__].itemSellingPrice}" step="any" name="lineItems[__index__].itemSellingPrice" onchange="updateLineAmount(this)"></td>
+										<td class="px-3 bg-light"><input type="number" class="form-control-plaintext" th:field="*{lineItems[__${status.index}__].taxAmount}" step="any" name="lineItems[__index__].taxAmount" readonly></td>
+										<td class="px-3 bg-light"><input type="number" class="form-control-plaintext" th:field="*{lineItems[__${status.index}__].totalAmount}" step="any" name="lineItems[__index__].totalAmount" readonly></td>
+										<td class="align-middle px-3"><a th:onclick="removeLineItem(this)" ><img src="/images/delete.png" alt="delete" width="15px"></a></td>
+									</tr>
+									</tbody>
+								</table>
+							</div>
+							<div id="addItemFormDiv" class="row">
+									<a th:onclick="addItem()"  class="btn btn-secondary col-1" style="--bs-btn-padding-y:2px; --bs-btn-padding-x:0px; --bs-btn-font-size: .75rem;">Add Item</a>
+							</div>
+						</div>
+					</div>
+					<hr>
+					<div class="row py-4">
+						<div class="col-12 col-md-6">
+							<label for="customerNotes" class="col-6 form-label">Customer notes</label>
+							<div class="col-12 mb-4">
+								<textarea type="text" class="form-control" rows="2" id="customerNotes" th:field="*{customerNotes}" placeholder="Thank you for your business"></textarea>
+							</div>
+
+							<label for="termsAndConditions" class="col-6 form-label">Terms and Conditions</label>
+							<div class="col-12 mb-3">
+								<textarea type="text" class="form-control" rows="2" id="termsAndConditions" th:field="*{termsAndConditions}" placeholder="Used good cannot be replaced"></textarea>
+							</div>
+
+						</div>
+						<div class="col-1"></div>
+						<div class="col-12 col-md-4 bg-light ms-5">
+							<small>
+							<div class="row">
+								<label for="subTotal" class="col-6 form-label mt-2">Sub total</label>
+								<div class="col-6 mb-2">
+									<input type="number" class="form-control-plaintext" id="subTotal" th:field="*{subTotal}" readonly>
+								</div>
+							</div>
+							<div class="row">
+								<label for="tax" class="col-6 form-label">Tax</label>
+								<div class="col-6 mb-2">
+									<input type="number" class="form-control-plaintext" id="tax" th:field="*{tax}" readonly>
+								</div>
+							</div>
+							<div class="row">
+								<label for="discount" class="col-6 form-label">Discount</label>
+								<div class="col-3 mb-2">
+									<input type="number" class="form-control form-control-sm" id="discount" th:field="*{discount}" onchange="updateTotalAmount()" >
+								</div>
+							</div>
+							<div class="row">
+								<label for="charges" class="col-6 form-label">Charges</label>
+								<div class="col-3 mb-2">
+									<input type="number" class="form-control form-control-sm" id="charges" th:field="*{charges}" onchange="updateTotalAmount()">
+								</div>
+							</div>
+							<hr>
+							<div class="row ">
+								<label for="totalCost" class="col-6 pt-2 pl-2 h5 form-label"><strong>Total</strong></label>
+								<div class="col-6 pb-3">
+								<strong>
+									<input type="number" step="any" class="form-control-plaintext h5" id="totalCost" th:field="*{totalCost}" readonly>
+								</strong>
+								</div>
+							</div>
+						</small>
+						</div>
+					</div>
+					<hr>
+					<div class="modal-footer mb-3">
+						<a type="button" href="#" th:href="@{/invoices}" class="btn btn-md btn-outline-secondary">Cancel</a>
+						<button type="submit" class="btn btn-md btn-primary mx-4">Save</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+</html>

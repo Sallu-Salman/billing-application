@@ -1,3 +1,58 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <div class="dash">
-  Dashboard for here
+  <div class="container mt-3">
+    <div class="row h-50" >
+        <div class="col-6 d-flex flex-column align-items-center justify-content-center">
+          <p class="display-5 text-center text-secondary">AVM Oil Mills</p>
+          <p class="text-secondary">GSTIN : 32AAUFR3713P2ZM </p>
+          <p class="text-secondary">Madurai, Tamilnadu</p>
+        </div>
+        <div class="col-6 p-4 border">
+          <p class="h4 mx-5">Inventory low on Stock</p>
+          <div class="lowCountTable mx-5 border border-info bg-info bg-info-subtle">
+            <table class="table table-info">
+              <thead>
+              <tr>
+                <th>#</th>
+                <th>Item Name</th>
+                <th>Stock on hand</th>
+              </tr>
+              </thead>
+              <tbody class="table-group-divider">
+              <tr th:each="item, status : ${lowCountItems}">
+                <td th:text="${status.count}"></td>
+                <td th:text="${item.itemName}"></td>
+                <td th:text="${item.itemQuantity}"></td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+    </div>
+    <div class="row">
+      <div class="col-6 p-4 border">
+        <canvas id="receivableChart" style="width:100%"></canvas>
+      </div>
+      <div class="col-6 d-flex align-items-center">
+        <div class="row w-100 justify-content-center ">
+          <div class="card text-center mx-2 col-3">
+            <h5 class="card-title mt-3 text-primary text-opacity-75">Total<br>Items</h5>
+            <hr>
+            <div class="card-body">
+              <span class="display-4 text-success text opacity-50" th:text="${itemCount}"></span>
+            </div>
+          </div>
+          <div class="card text-center mx-2 col-3">
+            <h5 class="card-title mt-3 text-opacity-75 text-primary">Total<br>Contacts</h5>
+            <hr>
+            <div class="card-body">
+              <span class="display-4 text-success text-opacity-50" th:text="${contactCount}"></span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
+</html>

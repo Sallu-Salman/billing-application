@@ -25,14 +25,19 @@ public class Item {
     @Column(name = "item_quantity")
     private int itemQuantity;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "item_tax")
+    private Tax itemTax;
+
     public Item() {
     }
 
-    public Item(int itemId, String itemName, double itemCostPrice, double itemSellingPrice, int itemQuantity) {
+    public Item(int itemId, String itemName, double itemCostPrice, double itemSellingPrice, int itemQuantity, Tax tax) {
         this.itemId = itemId;
         this.itemName = itemName;
         this.itemCostPrice = itemCostPrice;
         this.itemSellingPrice = itemSellingPrice;
         this.itemQuantity = itemQuantity;
+        this.itemTax = tax;
     }
 }

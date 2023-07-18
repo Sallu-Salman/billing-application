@@ -1,22 +1,28 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <div>
 	<div class="module-form-container">
-		<div class="card shadow-lg">
+		<div class="card w-75 shadow-lg">
 			<h5 class="card-header">Add New Contact</h5>
 			<div class="card-body">
-				<form class="row g-3 mt-2 mb-4" th:object="${contact}" th:action="@{/contacts/saveContact}" method="POST">
+				<form  th:object="${contact}" th:action="@{/contacts/saveContact}" method="POST">
 					<input type="hidden" id="contactId" th:field="*{contactId}">
-					<div class="col-12">
-						<label for="contactName" class="form-label">Contact Name</label>
-						<input type="text" class="form-control" id="contactName" th:field="*{contactName}">
+					<div class="row mb-3">
+						<label for="contactName" class="col-3 form-label">Contact Name</label>
+						<div class="col">
+							<input type="text" class="form-control" id="contactName" th:field="*{contactName}">
+						</div>
 					</div>
-					<div class="col-12 ">
-						<label for="contactEmail" class="form-label">Email Address</label>
-						<input type="email" class="form-control" id="contactEmail" th:field="*{contactEmail}">
+					<div class="row mb-3">
+						<label for="contactEmail" class="col-3 form-label">Email Address</label>
+						<div class="col">
+							<input type="email" class="form-control" id="contactEmail" th:field="*{contactEmail}">
+						</div>
 					</div>
-					<div class="col-12 ">
-						<label for="contactPhone" class="form-label">Phone Number</label>
-						<input type="number" class="form-control" id="contactPhone" th:field="*{contactPhone}">
+					<div class="row mb-3">
+						<label for="contactPhone" class="col-3 form-label">Phone Number</label>
+						<div class="col">
+							<input type="number" class="form-control" id="contactPhone" th:field="*{contactPhone}">
+						</div>
 					</div>
 					<div class="modal-footer">
 						<a type="button" href="#" th:href="@{/contacts}" class="btn btn-md btn-outline-secondary">Cancel</a>

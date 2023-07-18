@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,24 +7,25 @@
     <link rel="icon" th:href="@{/images/brand.png}" type="image/png">
     <link rel="stylesheet" th:href="@{/css/styles.css}" href="/css/styles.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+
 </head>
 <body>
     <div class="workspace">
         <div class="sallu-nav">
             <div class="nav-brand">
                 <img th:src="@{/images/brand-logo.png}"  alt="brand-logo" width="35vw">
-                <span id="brand">SALLU BILLS</span>
+                <span class="brand-mark" >SALLU BILLS</span>
             </div>
             <div class="nav-account">
-                <span>Organisation name</span>
-                <img src="https://img.icons8.com/?size=512&id=84898&format=png" alt="user-account" width="25vw" >
+                <span>AVM Oil Mills</span>
+                <a th:href="@{/getUserDetails}"><img src="https://img.icons8.com/?size=512&id=84898&format=png" alt="user-account" width="25vw" ></a>
             </div>
         </div>
         <div class="sallu-container">
             <div class="sallu-aside">
                 <ul class="aside-list">
                     <li>
-                        <a href="#" th:href="@{/home/dashboard}">
+                        <a href="#" th:href="@{/dashboard}">
                             <img src="https://img.icons8.com/?size=512&id=XFqvv26UmZNX&format=png" alt="dashboard">
                             <p class="aside-text">Dashboard</p>
                         </a>
@@ -45,21 +46,21 @@
                     </li>
                     <hr>
                     <li>
-                        <a href="#" th:href="@{/home/dashboard}">
+                        <a href="#" th:href="@{/invoices}">
                             <img src="https://img.icons8.com/?size=512&id=kBp3VdugUkVG&format=png" alt="invoice">
                             <p class="aside-text">Invoice</p>
                         </a>
                     </li>
                     <hr>
                     <li>
-                        <a href="#" th:href="@{/home/dashboard}">
+                        <a href="#" th:href="@{/taxes}">
                             <img src="https://img.icons8.com/?size=512&id=32187&format=png" alt="tax">
                             <p class="aside-text">Tax</p>
                         </a>
                     </li>
                     <hr>
                     <li>
-                        <a href="#" th:href="@{/home/dashboard}">
+                        <a href="#" th:href="@{/generalLedger}">
                             <img src="https://img.icons8.com/?size=512&id=a9cm7H37yIaV&format=png" alt="tax">
                             <p class="aside-text">Accounts</p>
                         </a>
@@ -83,12 +84,43 @@
                 <div th:if="${contact_form}">
                     <div th:insert="~{contact-form :: div}"></div>
                 </div>
+                <div class="tax-module-container" th:if="${tax_page}">
+                    <div th:insert="~{taxes :: div}"></div>
+                </div>
+                <div th:if="${tax_form}">
+                    <div th:insert="~{tax-form :: div}"></div>
+                </div>
+                <div class="module-container" th:if="${invoice_page}">
+                    <div th:insert="~{invoices :: div}"></div>
+                </div>
+                <div th:if="${invoice_form}">
+                    <div th:insert="~{invoice-form :: div}"></div>
+                </div>
+                <div th:if="${invoice_view_page}">
+                    <div th:insert="~{invoice-view-page :: div}"></div>
+                </div>
+                <div th:if="${general_ledger}">
+                    <div th:insert="~{general-ledger :: div}"></div>
+                </div>
             </div>
         </div>
-    </div>
 
+    </div>
+    <script th:inline="javascript">
+      var itemList = /*[[${itemList}]]*/ [];
+      var itemTaxMap = /*[[${itemTaxMap}]]*/ {};
+      var receivedAmount = /*[[${received}]]*/ null;
+      var notReceivedAmount = /*[[${notReceived}]]*/ null;
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.3.2/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
     <script src="js/script.js" th:src="@{/js/script.js}"></script>
     <script src="js/calculations.js" th:src="@{/js/calculations.js}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+
 </body>
 </html>

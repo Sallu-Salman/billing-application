@@ -1,0 +1,102 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div>
+	<div class="d-flex justify-content-end mt-4 mx-4">
+		<button th:onclick="downloadInvoice()" class="btn btn-primary mx-2">Download</button>
+	</div>
+	<div class="module-form-container invoice-form-container mb-4">
+		<div class="card w-75 px-4 mx-4 border-info border-2" id="invoiceTemplate">
+			<div class="card-body">
+				<div class="container">
+					<div class="row  mb-4">
+						<div class="col-4 px-0">
+							<h1 class="display-5 align-middle">INVOICE</h1>
+						</div>
+						<div class="col-3"></div>
+						<div class="col flexing-mid  d-flex justify-content-end">
+							<div class=" px-0">
+								<img src="/images/brand-logo.png" alt="brand" width="50px">
+								<span class="brand display-6 align-middle">SALLU BILLS</span>
+							</div>
+						</div>
+					</div>
+					<div class="row  mb-4">
+						<div class="col-4">
+							<span class="row mb-2">Billed To:</span>
+							<span class="row " th:text="${invoice.contact.contactName}"></span>
+							<span class="row " th:text="${invoice.contact.contactPhone}"></span>
+							<span class="row " th:text="${invoice.contact.contactEmail}"></span>
+						</div>
+						<div class="col-5"></div>
+						<div class="col">
+							<span class="row"><p>Organization Name</p></span>
+							<span class="row" ><p th:classappend="${invoice.status eq 'PAID'} ? 'status-cell-paid' : 'status-cell-unpaid'" th:text="${invoice.status}"></p></span>
+							<span class="row" ><p th:text="${invoice.invoiceDate}"></p></span>
+						</div>
+					</div>
+					<div th:if="${invoice.subject != null}" class="row  mb-4">
+						<p class="align-middle px-0">Subject : <span th:text="${invoice.subject}"></span></p>
+					</div>
+					<div class="row  mb-4">
+						<table class="table table-bordered table-md">
+							<thead class="table-light">
+								<tr>
+									<th>#</th>
+									<th>Item Name</th>
+									<th>Quantity</th>
+									<th>Rate</th>
+									<th>Tax(%)</th>
+									<th>Amount</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="lineItem, status : ${invoice.lineItems}">
+									<td th:text="${status.count}"></td>
+									<td th:text="*{lineItem.itemName}"></td>
+									<td th:text="*{lineItem.itemQuantity}"></td>
+									<td th:text="*{lineItem.itemSellingPrice}"></td>
+									<td th:text="*{lineItem.taxAmount}"></td>
+									<td th:text="*{lineItem.totalAmount}"></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="row  mb-4">
+						<div class="col-4">
+							<div class="mb-4" th:if="${invoice.customerNotes != null}">
+								<div class="row"><span>Customer Notes</span></div>
+								<div class="row"><em>-<span class=" px-3 mt-1" th:text="${invoice.customerNotes}"></span></em></div>
+							</div>
+							<div th:if="${invoice.termsAndConditions != null}">
+								<div class="row"><span>Terms and Conditions</span></div>
+								<div class="row"><em>-<span class=" px-3 mt-1" th:text="${invoice.termsAndConditions}"></span></em></div>
+							</div>
+						</div>
+						<div class="col-4"></div>
+						<div class="col ">
+							<div class="row my-1">
+								<div class="col">Sub Total</div>
+								<div class="col"><span th:text="${invoice.subTotal}"></span></div>
+							</div>
+							<div class="row my-1">
+								<div class="col">Tax</div>
+								<div class="col"><span th:text="${invoice.tax}"></span></div>
+							</div>
+							<div class="row my-1">
+								<div class="col">Discount</div>
+								<div class="col"><span th:text="${invoice.discount}"></span></div>
+							</div>
+							<div class="row my-1">
+								<div class="col">Charges</div>
+								<div class="col"><span th:text="${invoice.charges}"></span></div>
+							</div>
+							<div class="row my-1">
+								<div class="col h5 py-3">Total</div>
+								<div class="col h5 py-3"><span th:text="${invoice.totalCost}"></span></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
