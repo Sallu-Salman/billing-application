@@ -3,13 +3,12 @@ package com.sallu.BillingApplication.utils;
 import com.sallu.BillingApplication.constants.AccountsConstants;
 import com.sallu.BillingApplication.constants.InvoiceConstants;
 import com.sallu.BillingApplication.dao.LineItemDao;
-import com.sallu.BillingApplication.entity.ChartOfAccounts;
-import com.sallu.BillingApplication.entity.Invoice;
-import com.sallu.BillingApplication.entity.Item;
-import com.sallu.BillingApplication.entity.LineItem;
+import com.sallu.BillingApplication.entity.*;
 import com.sallu.BillingApplication.repository.ChartOfAccountsRepository;
+import com.sallu.BillingApplication.repository.ContactsRepositoty;
 import com.sallu.BillingApplication.repository.InvoicesRepository;
 import com.sallu.BillingApplication.repository.ItemsRepository;
+import org.springframework.ui.Model;
 
 import java.util.*;
 
@@ -17,14 +16,17 @@ public class InvoiceUtils {
 
     InvoicesRepository invoicesRepository;
     ItemsRepository itemsRepository;
+
+    ContactsRepositoty contactsRepositoty;
     ChartOfAccountsRepository chartOfAccountsRepository;
 
     LineItemDao lineItemDao;
-    public InvoiceUtils(InvoicesRepository invoicesRepository, LineItemDao lineItemDao, ItemsRepository itemsRepository, ChartOfAccountsRepository chartOfAccountsRepository) {
+    public InvoiceUtils(InvoicesRepository invoicesRepository, LineItemDao lineItemDao, ItemsRepository itemsRepository, ChartOfAccountsRepository chartOfAccountsRepository, ContactsRepositoty contactsRepositoty) {
         this.invoicesRepository = invoicesRepository;
         this.lineItemDao = lineItemDao;
         this.itemsRepository = itemsRepository;
         this.chartOfAccountsRepository = chartOfAccountsRepository;
+        this.contactsRepositoty = contactsRepositoty;
     }
 
     public void feedItemToLineItems(Invoice invoice) {
@@ -39,7 +41,8 @@ public class InvoiceUtils {
                 lineItemNames.add(lineItem.getItemName());
             }
         }
-        refactorLineItems(invoice, emptyLineItems);
+
+        invoice.getLineItems().removeAll(emptyLineItems);
         List<Item> items = itemsRepository.findByItemNameIn(lineItemNames);
 
         for(LineItem lineItem : invoice.getLineItems()) {
@@ -63,14 +66,8 @@ public class InvoiceUtils {
     public void updateInvoice(Invoice newInvoice){
 
         // Keeping it for future use like update inventory, chart of accounts etc..
-
         Invoice oldInvoice = invoicesRepository.findById(newInvoice.getInvoiceId()).orElse(null);
-
         deleteOldLineItems(oldInvoice, newInvoice);
-    }
-
-    public void refactorLineItems(Invoice invoice, List<LineItem> emptyLineItems) {
-        invoice.getLineItems().removeAll(emptyLineItems);
     }
 
     public void deleteOldLineItems(Invoice oldInvoice, Invoice newInvoice) {
@@ -103,40 +100,6 @@ public class InvoiceUtils {
 
         return itemTaxMap;
     }
-
-    public void markAsPaid(int invoiceId){
-        Invoice invoice = invoicesRepository.findById(invoiceId).orElse(null);
-        invoice.setStatus(InvoiceConstants.PAID);
-        invoicesRepository.save(invoice);
-
-        ChartOfAccounts accReceivable = chartOfAccountsRepository.findById(AccountsConstants.ACCOUNTS_RECEIVABLE).orElse(null);
-        ChartOfAccounts cash = chartOfAccountsRepository.findById(AccountsConstants.CASH_EQUIVALENT).orElse(null);
-
-        accReceivable.setCredit(accReceivable.getCredit() + invoice.getTotalCost());
-        cash.setDebit(cash.getDebit() + invoice.getTotalCost());
-
-        chartOfAccountsRepository.saveAll(new ArrayList<>(){{
-            add(accReceivable);
-            add(cash);
-        }});
-    }
-    public void markAsUnpaid(int invoiceId) {
-        Invoice invoice = invoicesRepository.findById(invoiceId).orElse(null);
-        invoice.setStatus(InvoiceConstants.UNPAID);
-        invoicesRepository.save(invoice);
-
-        ChartOfAccounts accReceivable = chartOfAccountsRepository.findById(AccountsConstants.ACCOUNTS_RECEIVABLE).orElse(null);
-        ChartOfAccounts cash = chartOfAccountsRepository.findById(AccountsConstants.CASH_EQUIVALENT).orElse(null);
-
-        accReceivable.setCredit(accReceivable.getCredit() - invoice.getTotalCost());
-        cash.setDebit(cash.getDebit() - invoice.getTotalCost());
-
-        chartOfAccountsRepository.saveAll(new ArrayList<>(){{
-            add(accReceivable);
-            add(cash);
-        }});
-    }
-
     public void changeStatus(int invoiceId, String status) {
         Invoice invoice = invoicesRepository.findById(invoiceId).orElse(null);
         invoice.setStatus(status);
@@ -154,6 +117,15 @@ public class InvoiceUtils {
             add(accReceivable);
             add(cash);
         }});
+    }
+
+    public void feedModelForInvoiceForm(Model model) {
+        List<Contact> contactList = contactsRepositoty.findAll();
+        List<Item> itemList = itemsRepository.findAll();
+        model.addAttribute("invoice_form", true);
+        model.addAttribute("contactList", contactList);
+        model.addAttribute("itemList", itemList);
+        model.addAttribute("itemTaxMap", getItemTaxMap());
     }
 
     public void tailorInvoice(Invoice invoice) {

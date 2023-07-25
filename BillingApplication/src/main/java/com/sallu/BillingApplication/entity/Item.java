@@ -1,6 +1,7 @@
 package com.sallu.BillingApplication.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import lombok.Data;
 
 @Entity
@@ -13,15 +14,19 @@ public class Item {
     @Column(name = "item_id")
     private int itemId;
 
+    @NotEmpty(message = "Please enter Item Name")
     @Column(name = "item_name")
     private String itemName;
 
+    @Min(value = 0, message = "Please enter a positive value")
     @Column(name = "item_cost_price")
     private double itemCostPrice;
 
+    @Min(value = 0, message = "Please enter a positive value")
     @Column(name = "item_selling_price")
     private double itemSellingPrice;
 
+    @Min(value = 0, message = "Please enter a positive value")
     @Column(name = "item_quantity")
     private int itemQuantity;
 

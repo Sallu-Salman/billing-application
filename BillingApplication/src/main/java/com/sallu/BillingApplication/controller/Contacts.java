@@ -3,8 +3,11 @@ package com.sallu.BillingApplication.controller;
 import com.sallu.BillingApplication.entity.Contact;
 import com.sallu.BillingApplication.entity.Item;
 import com.sallu.BillingApplication.repository.ContactsRepositoty;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -47,7 +50,11 @@ public class Contacts {
         return "redirect:/contacts";
     }
     @PostMapping("/saveContact")
-    public String saveContact(@ModelAttribute("contact") Contact contact) {
+    public String saveContact(@Valid @ModelAttribute("contact") Contact contact, BindingResult result, Model model) {
+        if(result.hasErrors()) {
+            model.addAttribute("contact_form", true);
+            return "common-space";
+        }
         contactsRepositoty.save(contact);
         return "redirect:/contacts";
     }

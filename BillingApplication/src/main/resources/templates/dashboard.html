@@ -1,6 +1,9 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <div class="dash">
   <div class="container mt-3">
+    <div th:if="${wentWrong}" class="alert alert-danger row mx-4" role="alert">
+      <span>Something went wrong! Last action cannot be performed successfully</span>
+    </div>
     <div class="row h-50" >
         <div class="col-6 d-flex flex-column align-items-center justify-content-center">
           <p class="display-5 text-center text-secondary">AVM Oil Mills</p>
@@ -13,7 +16,7 @@
             <table class="table table-info">
               <thead>
               <tr>
-                <th>#</th>
+                <th>S.no</th>
                 <th>Item Name</th>
                 <th>Stock on hand</th>
               </tr>

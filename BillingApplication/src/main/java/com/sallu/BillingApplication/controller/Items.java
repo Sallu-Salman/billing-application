@@ -5,8 +5,10 @@ import com.sallu.BillingApplication.entity.Tax;
 import com.sallu.BillingApplication.repository.ChartOfAccountsRepository;
 import com.sallu.BillingApplication.repository.ItemsRepository;
 import com.sallu.BillingApplication.repository.TaxesRepository;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -57,7 +59,12 @@ public class Items {
     }
 
     @PostMapping("/saveItem")
-    public String saveItem(@ModelAttribute("item") Item item, @RequestParam("itemTax") int taxId) {
+    public String saveItem(@Valid @ModelAttribute("item") Item item, BindingResult result, @RequestParam("itemTax") int taxId, Model model) {
+        if(result.hasErrors()) {
+            model.addAttribute("taxList", taxesRepository.findAll());
+            model.addAttribute("item_form", true);
+            return "common-space";
+        }
         Tax tax = taxesRepository.findById(taxId).orElse(null);
         item.setItemTax(tax);
         itemsRepository.save(item);

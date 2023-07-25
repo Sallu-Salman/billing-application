@@ -6,31 +6,47 @@
                 <div class="card-body">
                     <form  th:object="${item}" th:action="@{/items/saveItem}" method="POST">
                         <input type="hidden" id="itemId" th:field="*{itemId}">
-                        <div class="row mb-3">
+                        <div class="row">
                             <label for="itemName" class="col-3 col-form-label">Item Name</label>
-                            <div class="col-9">
-                                <input type="text" class="form-control" id="itemName" th:field="*{itemName}" required>
+                            <div class="col">
+                                <input type="text" class="form-control" id="itemName" th:field="*{itemName}">
                             </div>
                         </div>
-                        <div class="row mb-3">
+                        <div th:if="${#fields.hasErrors('itemName')}" class="row mb-3">
+                            <div class="col-3"></div>
+                            <em class="col text-danger"><span  th:errors="*{itemName}"></span></em>
+                        </div>
+                        <div class="row mt-3">
                             <label for="itemCostPrice" class="col-3 form-label">Cost Price</label>
                             <div class="col-9 ">
                                 <input type="number" class="form-control" id="itemCostPrice" th:field="*{itemCostPrice}" >
                             </div>
                         </div>
-                        <div class="row mb-3">
+                        <div th:if="${#fields.hasErrors('itemCostPrice')}" class="row mb-3">
+                            <div class="col-3"></div>
+                            <em class="col text-danger"><span  th:errors="*{itemCostPrice}"></span></em>
+                        </div>
+                        <div class="row mt-3">
                             <label for="itemSellingPrice" class="col-3 form-label">Selling Price</label>
                             <div class="col-9">
                                 <input type="number" class="form-control" id="itemSellingPrice" th:field="*{itemSellingPrice}">
                             </div>
                         </div>
-                        <div class="row mb-3">
+                        <div th:if="${#fields.hasErrors('itemSellingPrice')}" class="row mb-3">
+                            <div class="col-3"></div>
+                            <em class="col text-danger"><span  th:errors="*{itemSellingPrice}"></span></em>
+                        </div>
+                        <div class="row mt-3">
                             <label for="itemQuantity" class="col-3 form-label">Opening Stock</label>
                             <div class="col-9">
                                 <input type="number" class="form-control" id="itemQuantity" th:field="*{itemQuantity}">
                             </div>
                         </div>
-                        <div class="row mb-3">
+                        <div th:if="${#fields.hasErrors('itemQuantity')}" class="row mb-3">
+                            <div class="col-3"></div>
+                            <em class="col text-danger"><span  th:errors="*{itemQuantity}"></span></em>
+                        </div>
+                        <div class="row mt-3">
                             <label for="itemTax" class="col-3 form-label">Tax Associated</label>
                             <div class="col-9">
                                 <select class="form-select" id="itemTax" name="itemTax" required>
@@ -39,7 +55,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="modal-footer">
+                        <div class="modal-footer mt-3">
                             <a type="button" href="#" th:href="@{/items}" class="btn btn-md btn-outline-secondary">Cancel</a>
                             <button type="submit" class="btn btn-md btn-primary mx-4">Save</button>
                         </div>

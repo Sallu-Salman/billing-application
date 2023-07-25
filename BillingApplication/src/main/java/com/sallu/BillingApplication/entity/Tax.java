@@ -1,6 +1,9 @@
 package com.sallu.BillingApplication.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 
 @Entity
@@ -12,9 +15,12 @@ public class Tax {
     @Column(name = "tax_id")
     private int taxId;
 
+    @NotEmpty(message = "Please enter a Tax name")
     @Column(name = "tax_name")
     private String taxName;
 
+    @Min(value = 0, message = "Please enter a valid percentage")
+    @Max(value = 0, message = "Please enter a valid percentage")
     @Column(name = "tax_percentage")
     private float taxPercentage;
 

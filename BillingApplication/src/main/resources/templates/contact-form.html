@@ -6,25 +6,37 @@
 			<div class="card-body">
 				<form  th:object="${contact}" th:action="@{/contacts/saveContact}" method="POST">
 					<input type="hidden" id="contactId" th:field="*{contactId}">
-					<div class="row mb-3">
+					<div class="row">
 						<label for="contactName" class="col-3 form-label">Contact Name</label>
 						<div class="col">
 							<input type="text" class="form-control" id="contactName" th:field="*{contactName}">
 						</div>
 					</div>
-					<div class="row mb-3">
+					<div th:if="${#fields.hasErrors('contactName')}" class="row mb-3">
+						<div class="col-3"></div>
+						<em class="col text-danger"><span  th:errors="*{contactName}"></span></em>
+					</div>
+					<div class="row mt-3">
 						<label for="contactEmail" class="col-3 form-label">Email Address</label>
 						<div class="col">
 							<input type="email" class="form-control" id="contactEmail" th:field="*{contactEmail}">
 						</div>
 					</div>
-					<div class="row mb-3">
+					<div th:if="${#fields.hasErrors('contactEmail')}" class="row mb-3">
+						<div class="col-3"></div>
+						<em class="col text-danger"><span  th:errors="*{contactEmail}"></span></em>
+					</div>
+					<div class="row mt-3">
 						<label for="contactPhone" class="col-3 form-label">Phone Number</label>
 						<div class="col">
 							<input type="number" class="form-control" id="contactPhone" th:field="*{contactPhone}">
 						</div>
 					</div>
-					<div class="modal-footer">
+					<div th:if="${#fields.hasErrors('contactPhone')}" class="row mb-3">
+						<div class="col-3"></div>
+						<em class="col text-danger"><span  th:errors="*{contactPhone}"></span></em>
+					</div>
+					<div class="modal-footer mt-3">
 						<a type="button" href="#" th:href="@{/contacts}" class="btn btn-md btn-outline-secondary">Cancel</a>
 						<button type="submit" class="btn btn-md btn-primary mx-4">Save</button>
 					</div>

@@ -49,21 +49,6 @@ public class Home {
         return "common-space";
     }
 
-    @GetMapping("/signup")
-    public String showFormSignUp(Model model) {
-        model.addAttribute("user", new User());
-        return "signup-form";
-    }
-
-    @PostMapping("/createUser")
-    public String createUser(@ModelAttribute("user") User user) {
-        user.setPassword("{noop}" + user.getPassword());
-        user.setAuthority(new Authority("MANAGER", user));
-        user.setEnabled(1);
-        usersRepository.save(user);
-        return "redirect:/login-form";
-    }
-
     @GetMapping("/generalLedger")
     public String getGeneralLedger(Model model) {
         List<ChartOfAccounts> chartOfAccounts = chartOfAccountsRepository.findAll();

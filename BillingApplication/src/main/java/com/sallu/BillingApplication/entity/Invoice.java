@@ -1,6 +1,10 @@
 package com.sallu.BillingApplication.entity;
 
+import com.sallu.BillingApplication.validator.IdNotZero;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
 import java.util.List;
@@ -17,6 +21,7 @@ public class Invoice {
     @Column(name = "status")
     private String status;
 
+    @NotEmpty(message = "Please choose a valid date")
     @Column(name = "invoice_date")
     private String invoiceDate;
 
@@ -44,10 +49,12 @@ public class Invoice {
     @Column(name = "total_cost")
     private float totalCost;
 
+    @IdNotZero
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private Contact contact;
 
+    @NotNull(message = "Invoice should have at least one item")
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "invoice_id")
     private List<LineItem> lineItems;

@@ -4,13 +4,12 @@ import com.sallu.BillingApplication.constants.InvoiceConstants;
 import com.sallu.BillingApplication.dao.LineItemDao;
 import com.sallu.BillingApplication.entity.Contact;
 import com.sallu.BillingApplication.entity.Invoice;
-import com.sallu.BillingApplication.entity.Item;
-import com.sallu.BillingApplication.entity.LineItem;
 import com.sallu.BillingApplication.repository.*;
 import com.sallu.BillingApplication.utils.InvoiceUtils;
-import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -37,7 +36,7 @@ public class Invoices {
         this.chartOfAccountsRepository = chartOfAccountsRepository;
         this.lineItemDao = lineItemDao;
 
-        invoiceUtils = new InvoiceUtils(invoicesRepository, lineItemDao, itemsRepository, chartOfAccountsRepository);
+        invoiceUtils = new InvoiceUtils(invoicesRepository, lineItemDao, itemsRepository, chartOfAccountsRepository, contactsRepositoty);
     }
 
     @GetMapping
@@ -53,20 +52,19 @@ public class Invoices {
         Invoice invoice = new Invoice();
         invoice.setContact(new Contact());
         invoice.setLineItems(new ArrayList<>());
-        List<Contact> contactList = contactsRepositoty.findAll();
-        List<Item> itemList = itemsRepository.findAll();
 
-        model.addAttribute("invoice_form", true);
+        invoiceUtils.feedModelForInvoiceForm(model);
         model.addAttribute("invoice", invoice);
-        model.addAttribute("contactList", contactList);
-        model.addAttribute("itemList", itemList);
-        model.addAttribute("itemTaxMap", invoiceUtils.getItemTaxMap());
         return "common-space";
     }
 
     @PostMapping("/saveInvoice")
-    public String saveInvoice(@ModelAttribute("invoice") Invoice invoice, @RequestParam("contactId") int contactId) {
-        feedContact(contactId, invoice);
+    public String saveInvoice(@Valid @ModelAttribute("invoice") Invoice invoice, BindingResult result, Model model) {
+
+        if(result.hasErrors()) {
+            invoiceUtils.feedModelForInvoiceForm(model);
+            return "common-space";
+        }
         invoiceUtils.feedItemToLineItems(invoice);
         invoice.setStatus(InvoiceConstants.UNPAID);
         if(invoice.getInvoiceId() != 0 ){
@@ -77,21 +75,13 @@ public class Invoices {
         return "redirect:/invoices";
     }
 
-    public void feedContact(int contactId, Invoice invoice) {
-        invoice.setContact(contactsRepositoty.findById(contactId).orElse(null));
-    }
-
     @GetMapping("/editInvoice")
     public String editInvoiceForm(Model model, @RequestParam("invoiceId") int invoiceId){
-        List<Contact> contactList = contactsRepositoty.findAll();
-        List<Item> itemList = itemsRepository.findAll();
         Invoice invoice = invoicesRepository.findById(invoiceId).orElse(null);
-        contactList.remove(invoice.getContact());
-        model.addAttribute("invoice_form", true);
         model.addAttribute("invoice", invoice);
-        model.addAttribute("contactList", contactList);
-        model.addAttribute("itemList", itemList);
-        model.addAttribute("itemTaxMap", invoiceUtils.getItemTaxMap());
+        invoiceUtils.feedModelForInvoiceForm(model);
+        List<Contact> contactList =(List<Contact>)model.getAttribute("contactList");
+        contactList.remove(invoice.getContact());
         return "common-space";
     }
 

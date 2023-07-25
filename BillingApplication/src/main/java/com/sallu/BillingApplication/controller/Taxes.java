@@ -2,8 +2,10 @@ package com.sallu.BillingApplication.controller;
 
 import com.sallu.BillingApplication.entity.Tax;
 import com.sallu.BillingApplication.repository.TaxesRepository;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,7 +36,11 @@ public class Taxes {
     }
 
     @PostMapping("/saveTax")
-    public String saveTax(@ModelAttribute("tax") Tax tax) {
+    public String saveTax(@Valid @ModelAttribute("tax") Tax tax, BindingResult result, Model model) {
+        if(result.hasErrors()) {
+            model.addAttribute("tax_form", true);
+            return "common-space";
+        }
         taxesRepository.save(tax);
         return "redirect:/taxes";
     }

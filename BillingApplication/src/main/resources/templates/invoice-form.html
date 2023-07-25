@@ -7,22 +7,30 @@
 				<form th:object="${invoice}" th:action="@{/invoices/saveInvoice}" method="POST" id="invoiceForm">
 					<input type="hidden" id="invoiceId" th:field="*{invoiceId}">
 
-					<div class="row mb-3">
-						<label for="contactId" class="col-12 form-label col-md-2">Customer Name</label>
+					<div class="row">
+						<label for="contactId" class="col-12 form-label col-md-2">Customer Name *</label>
 						<div class="col-12 col-md-6">
-							<select class="form-select" id="contactId" name="contactId" required>
+							<select class="form-select" id="contactId" name="contactId" th:field="*{contact.contactId}" required>
 								<option selected th:value="*{contact.contactId}" th:text="*{contact.contactName}"></option>
 								<option th:each="contact : ${contactList}" th:value="${contact.contactId}" th:text="${contact.contactName}"></option>
 							</select>
 						</div>
 					</div>
-					<div class="row mb-5">
-						<label for="invoiceDate" class="col-12 form-label col-md-2">Invoice Date</label>
+					<div th:if="${#fields.hasErrors('contact')}" class="row mb-3">
+						<div class="col-12 col-md-2"></div>
+						<em class="col text-danger"><span  th:errors="*{contact}"></span></em>
+					</div>
+					<div class="row mt-3">
+						<label for="invoiceDate" class="col-12 form-label col-md-2">Invoice Date *</label>
 						<div class="col-12 col-md-3">
 							<input type="date" class="form-control" id="invoiceDate"  th:field="*{invoiceDate}">
 						</div>
 					</div>
-					<div class="row mb-5">
+					<div th:if="${#fields.hasErrors('invoiceDate')}" class="row mb-3">
+						<div class="col-12 col-md-2"></div>
+						<em class="col text-danger"><span  th:errors="*{invoiceDate}"></span></em>
+					</div>
+					<div class="row mt-5 mb-5">
 						<label for="subject" class="col-12 form-label col-md-2">Subject</label>
 						<div class="col-12 col-md-6">
 							<input type="text" class="form-control" id="subject" th:field="*{subject}" placeholder="Monthly general groceries">
@@ -32,13 +40,16 @@
 					<div class="row mb-3 px-5">
 						<div class="col">
 							<div class="row">
-								<p>Line Items</p>
+								<p class="col-2">Line Items *</p>
+								<div th:if="${#fields.hasErrors('lineItems')}" class="col ">
+									<em class="text-danger"><span  th:errors="*{lineItems}"></span></em>
+								</div>
 							</div>
 							<div class="row">
 								<table id="lineItemTable" class="table table-sm table-bordered ">
 									<thead class="table-light">
 									<tr>
-										<th class="px-3">#</th>
+										<th class="px-3">S.no</th>
 										<th class="px-3">Item</th>
 										<th class="px-3">Quantity</th>
 										<th class="px-3">Rate</th>
