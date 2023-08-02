@@ -1,7 +1,7 @@
 # Sallu Bills
 <h2>A Simple Billing Software</h2>
     <p>More specific for small-sized enterprises.</p>
-    <p>Hosted link: <a href="http://ec2-3-83-100-28.compute-1.amazonaws.com:8080/" target="_blank">http://ec2-3-83-100-28.compute-1.amazonaws.com:8080//</a></p>
+    <p>Hosted link: <a href="ec2-44-211-175-123.compute-1.amazonaws.com" target="_blank">http://ec2-3-83-100-28.compute-1.amazonaws.com:8080//</a></p>
     <p>Login Credentials ( Username : 'Guest' , Password : '12345' )</p>
     <div class="technologies">
         <h2>Technologies used:</h2>
